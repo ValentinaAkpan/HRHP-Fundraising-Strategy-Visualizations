@@ -75,7 +75,7 @@ elif option == "Data Monetization Strategy":
                             textposition="bottom center", hoverinfo="text")
 
     fig = go.Figure(data=[edge_trace, node_trace])
-    fig.update_layout(title="Data Monetization Flowchart", showlegend=False, height=500, width=700)
+    fig.update_layout(title="Data Monetization", showlegend=False, height=500, width=700)
 
     st.plotly_chart(fig)
 
