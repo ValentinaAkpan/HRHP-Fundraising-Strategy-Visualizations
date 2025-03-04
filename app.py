@@ -20,8 +20,8 @@ option = st.sidebar.selectbox(
 )
 
 # 1. Funding Diversification Pyramid
-if option == "Funding Diversification Pyramid":
-    st.subheader("Funding Diversification Pyramid")
+if option == "Funding Diversification":
+    st.subheader("Funding Diversification")
 
     labels = ["Endowment & Investments", "Mid-sized Grants & HNWIs", "Short-term Grants & Corporate"]
     values = [10, 30, 60]  # Proportions of funding sources
@@ -43,8 +43,8 @@ if option == "Funding Diversification Pyramid":
     """)
 
 # 2. Data Monetization Strategy Flowchart
-elif option == "Data Monetization Strategy Flowchart":
-    st.subheader("Data Monetization Strategy Flowchart")
+elif option == "Data Monetization Strategy":
+    st.subheader("Data Monetization Strategy")
 
     nodes = ["HRHP Data Assets", "Corporate Users", "Conservation Reinvestment"]
     edges = [("HRHP Data Assets", "Corporate Users"), ("Corporate Users", "Conservation Reinvestment")]
@@ -86,7 +86,7 @@ elif option == "Data Monetization Strategy Flowchart":
     """)
 
 # 3. Implementation Timeline (Gantt Chart)
-elif option == "Implementation Timeline (Gantt Chart)":
+elif option == "Implementation Timeline":
     st.subheader("Implementation Timeline (March - September 2025)")
 
     df = pd.DataFrame([
@@ -115,8 +115,8 @@ elif option == "Implementation Timeline (Gantt Chart)":
     """)
 
 # 4. HRHP Partnership Ecosystem Map
-elif option == "HRHP Partnership Ecosystem Map":
-    st.subheader("HRHP Partnership Ecosystem Map")
+elif option == "HRHP Partnership Ecosystem":
+    st.subheader("HRHP Partnership Ecosystem")
 
     G = nx.Graph()
 
