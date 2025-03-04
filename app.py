@@ -5,17 +5,17 @@ import pandas as pd
 import networkx as nx
 
 # Streamlit App
-st.title("HRHP Fundraising Strategy Visualizations")
+st.title("HRHP Fundraising Strategy")
 
 # Sidebar for Visualization Selection
 st.sidebar.header("Select Visualization")
 option = st.sidebar.selectbox(
     "Choose a visualization",
     [
-        "Funding Diversification Pyramid",
-        "Data Monetization Strategy Flowchart",
-        "Implementation Timeline (Gantt Chart)",
-        "HRHP Partnership Ecosystem Map"
+        "Funding Diversification",
+        "Data Monetization Strategy",
+        "Implementation Timeline",
+        "HRHP Partnership Ecosystem"
     ]
 )
 
