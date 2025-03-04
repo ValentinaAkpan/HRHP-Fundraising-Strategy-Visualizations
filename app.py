@@ -194,8 +194,8 @@ elif option == "HRHP Partnership Ecosystem":
 
     st.write("""
     - **HRHP sits at the center of a vast network** of funders, research partners, and conservation institutions.  
-    - **Funders (Green):** Government grants, private foundations, corporate sponsors, and high-net-worth individuals (HNWIs).  
-    - **Partners (Orange):** NGOs, research universities, MARFund, and local governments.  
+    - **Funders:** Government grants, private foundations, corporate sponsors, and high-net-worth individuals (HNWIs).  
+    - **Partners:** NGOs, research universities, MARFund, and local governments.  
     - **Strengthening these relationships** will enhance funding reliability and resource-sharing opportunities.  
     """)
 
