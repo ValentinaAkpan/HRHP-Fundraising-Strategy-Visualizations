@@ -42,7 +42,7 @@ if option == "Funding Diversification":
     - **Top (Long-term sustainability):** Endowment fund, unrestricted foundation funding, investment returns.  
     """)
 
-# 2. Data Monetization Strategy Flowchart
+# 2. Data Monetization Strategy Flowchart (fixed)
 elif option == "Data Monetization Strategy":
     st.subheader("Data Monetization Strategy")
 
@@ -52,7 +52,13 @@ elif option == "Data Monetization Strategy":
     G = nx.DiGraph()
     G.add_edges_from(edges)
 
-    pos = nx.spring_layout(G, seed=42)
+    # Explicit node positions for clarity
+    pos = {
+        "HRHP Data Assets": (0, 1),
+        "Corporate Users": (1, 0.5),
+        "Conservation Reinvestment": (2, 1)
+    }
+
     edge_x, edge_y = [], []
     for edge in G.edges():
         x0, y0 = pos[edge[0]]
@@ -61,21 +67,34 @@ elif option == "Data Monetization Strategy":
         edge_y.extend([y0, y1, None])
 
     node_x, node_y, text = [], [], []
-    for node in G.nodes():
+    colors = ["#09188d", "#ff7f0e", "#2ca02c"]
+    for i, node in enumerate(G.nodes()):
         x, y = pos[node]
         node_x.append(x)
         node_y.append(y)
         text.append(node)
 
-    edge_trace = go.Scatter(x=edge_x, y=edge_y, line=dict(width=1, color="#888"),
-                            hoverinfo="none", mode="lines")
+    edge_trace = go.Scatter(
+        x=edge_x, y=edge_y, line=dict(width=1.5, color="#888"),
+        hoverinfo="none", mode="lines"
+    )
 
-    node_trace = go.Scatter(x=node_x, y=node_y, mode="markers+text",
-                            text=text, marker=dict(size=20, color=["#09188d", "#ff7f0e", "#2ca02c"]),
-                            textposition="bottom center", hoverinfo="text")
+    node_trace = go.Scatter(
+        x=node_x, y=node_y, mode="markers+text",
+        text=text, marker=dict(size=40, color=colors, line=dict(width=2, color='white')),
+        textposition="bottom center", hoverinfo="text"
+    )
 
     fig = go.Figure(data=[edge_trace, node_trace])
-    fig.update_layout(title="Data Monetization", showlegend=False, height=500, width=700)
+    fig.update_layout(
+        title="Data Monetization Strategy Flow",
+        showlegend=False,
+        height=400,
+        width=700,
+        xaxis=dict(showgrid=False, zeroline=False, visible=False),
+        yaxis=dict(showgrid=False, zeroline=False, visible=False),
+        plot_bgcolor='white'
+    )
 
     st.plotly_chart(fig)
 
@@ -98,11 +117,9 @@ elif option == "Implementation Timeline":
 
     df["Start"] = pd.to_datetime(df["Start"])
     df["End"] = pd.to_datetime(df["End"])
-    df["Duration"] = df["End"] - df["Start"]
 
     fig = px.timeline(df, x_start="Start", x_end="End", y="Task", title="HRHP Implementation Timeline",
-                      color="Task", labels={"Task": "Task", "Start": "Start Date", "End": "End Date"},
-                      template="plotly_white")
+                      color="Task", template="plotly_white")
 
     fig.update_yaxes(categoryorder="total ascending")
     st.plotly_chart(fig)
@@ -119,22 +136,16 @@ elif option == "HRHP Partnership Ecosystem":
     st.subheader("HRHP Partnership Ecosystem")
 
     G = nx.Graph()
-
-    # Define node categories
     main_node = "HRHP"
     funders = ["Government Grants", "Private Foundations", "Corporate Sponsors", "HNWIs"]
     partners = ["MARFund", "Research Universities", "NGOs", "Local Governments"]
 
-    # Add nodes and edges
     G.add_node(main_node)
-    for f in funders:
+    for f in funders + partners:
         G.add_edge(main_node, f)
-    for p in partners:
-        G.add_edge(main_node, p)
 
     pos = nx.spring_layout(G, seed=42)
 
-    # Extract edge positions
     edge_x, edge_y = [], []
     for edge in G.edges():
         x0, y0 = pos[edge[0]]
@@ -142,7 +153,6 @@ elif option == "HRHP Partnership Ecosystem":
         edge_x.extend([x0, x1, None])
         edge_y.extend([y0, y1, None])
 
-    # Extract node positions and assign colors/sizes
     node_x, node_y, text, colors, sizes = [], [], [], [], []
     for node in G.nodes():
         x, y = pos[node]
@@ -150,44 +160,33 @@ elif option == "HRHP Partnership Ecosystem":
         node_y.append(y)
         text.append(node)
 
-        # Assign colors and sizes
         if node == main_node:
-            colors.append("#09188d")  # Dark Blue for HRHP
-            sizes.append(30)  # Larger size for HRHP
+            colors.append("#09188d")
+            sizes.append(30)
         elif node in funders:
-            colors.append("#2ca02c")  # Green for Funders
+            colors.append("#2ca02c")
             sizes.append(20)
-        elif node in partners:
-            colors.append("#ff7f0e")  # Orange for Partners
+        else:
+            colors.append("#ff7f0e")
             sizes.append(20)
 
-    # Create edge trace (lighter and transparent edges)
     edge_trace = go.Scatter(
-        x=edge_x, y=edge_y,
-        line=dict(width=1.5, color="rgba(150,150,150,0.5)"),  # Lighter, semi-transparent
-        hoverinfo="none",
-        mode="lines"
+        x=edge_x, y=edge_y, line=dict(width=1.5, color="rgba(150,150,150,0.5)"),
+        hoverinfo="none", mode="lines"
     )
 
-    # Create node trace (larger, color-coded nodes)
     node_trace = go.Scatter(
-        x=node_x, y=node_y,
-        mode="markers+text",
-        text=text,
-        marker=dict(size=sizes, color=colors, line=dict(width=2, color="white")),
-        textposition="top center",  # Moves text slightly above nodes
-        hoverinfo="text"
+        x=node_x, y=node_y, mode="markers+text",
+        text=text, marker=dict(size=sizes, color=colors, line=dict(width=2, color="white")),
+        textposition="top center", hoverinfo="text"
     )
 
-    # Create figure with hidden axes
     fig = go.Figure(data=[edge_trace, node_trace])
     fig.update_layout(
         title="HRHP Partnership Ecosystem",
-        showlegend=False,
-        height=600,
-        width=800,
-        xaxis=dict(showgrid=False, zeroline=False, visible=False),  # Hide X-axis
-        yaxis=dict(showgrid=False, zeroline=False, visible=False)   # Hide Y-axis
+        showlegend=False, height=600, width=800,
+        xaxis=dict(showgrid=False, zeroline=False, visible=False),
+        yaxis=dict(showgrid=False, zeroline=False, visible=False)
     )
 
     st.plotly_chart(fig)
@@ -199,9 +198,4 @@ elif option == "HRHP Partnership Ecosystem":
     - **Strengthening these relationships** will enhance funding reliability and resource-sharing opportunities.  
     """)
 
-
-
-
-
-# End of Streamlit App
 st.sidebar.info("Select a visualization from the dropdown to view strategy insights.")
