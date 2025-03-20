@@ -3,10 +3,16 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import networkx as nx
-import graphviz
 import base64
 
-# Function to render SVG logos
+# -----------------------------------------
+# PAGE SETUP
+# -----------------------------------------
+st.set_page_config(page_title="HRHP Strategy Dashboard", layout="wide")
+
+# -----------------------------------------
+# FUNCTION: Render SVG Logos
+# -----------------------------------------
 def render_svg(svg_file, width="150"):
     with open(svg_file, "r") as f:
         svg = f.read()
@@ -14,19 +20,23 @@ def render_svg(svg_file, width="150"):
     html = f'<img src="data:image/svg+xml;base64,{b64}" width="{width}"/>'
     return html
 
-# Display logos and title
+# -----------------------------------------
+# HEADER WITH LOGOS + TITLE
+# -----------------------------------------
 col1, col2, col3 = st.columns([1, 3, 1])
 
 with col1:
     st.markdown(render_svg("66b16833c7877e9078babfd7_Healthy-Reefs.svg", width="600"), unsafe_allow_html=True)
 
 with col2:
-    st.title("Healthy Reefs for Healthy People (HRHP) Fundraising & Internal Processes Strategy")
+    st.title("Healthy Reefs for Healthy People (HRHP) Strategy Dashboard")
 
 with col3:
-    st.write("")  # Add another logo here if available
+    st.write("")  # Optional second logo
 
-# Sidebar for Visualization Selection
+# -----------------------------------------
+# SIDEBAR NAVIGATION
+# -----------------------------------------
 st.sidebar.header("Select Visualization")
 option = st.sidebar.selectbox(
     "Choose a visualization",
@@ -39,8 +49,12 @@ option = st.sidebar.selectbox(
     ]
 )
 
-# 1. Funding Diversification Pyramid
+# ===================================================
+# 1. FUNDING DIVERSIFICATION
+# ===================================================
 if option == "Funding Diversification":
+    st.header("📈 Funding Diversification Strategy")
+
     labels = ["Endowment & Investments", "Mid-sized Grants & HNWIs", "Short-term Grants & Corporate"]
     values = [10, 30, 60]
 
@@ -60,8 +74,12 @@ if option == "Funding Diversification":
     - **Top (Long-term sustainability):** Endowment fund, unrestricted foundation funding, investment returns.  
     """)
 
-# 2. Data Monetization Strategy
+# ===================================================
+# 2. DATA MONETIZATION STRATEGY
+# ===================================================
 elif option == "Data Monetization Strategy":
+    st.header("💡 Data Monetization Strategy")
+
     nodes = ["HRHP Data Assets", "Corporate Users", "Conservation Reinvestment"]
     edges = [("HRHP Data Assets", "Corporate Users"), ("Corporate Users", "Conservation Reinvestment")]
 
@@ -97,8 +115,12 @@ elif option == "Data Monetization Strategy":
 
     st.plotly_chart(fig)
 
-# 3. Implementation Timeline
+# ===================================================
+# 3. IMPLEMENTATION TIMELINE
+# ===================================================
 elif option == "Implementation Timeline":
+    st.header("🗓️ Implementation Timeline")
+
     df = pd.DataFrame([
         {"Task": "Grant Acquisition", "Start": "2025-03-01", "End": "2025-06-30"},
         {"Task": "Corporate Partnerships", "Start": "2025-03-15", "End": "2025-07-31"},
@@ -114,8 +136,12 @@ elif option == "Implementation Timeline":
     fig.update_yaxes(categoryorder="total ascending")
     st.plotly_chart(fig)
 
-# 4. HRHP Partnership Ecosystem
+# ===================================================
+# 4. HRHP PARTNERSHIP ECOSYSTEM
+# ===================================================
 elif option == "HRHP Partnership Ecosystem":
+    st.header("🌐 HRHP Partnership Ecosystem")
+
     G = nx.Graph()
     main_node = "HRHP"
     funders = ["Government Grants", "Private Foundations", "Corporate Sponsors", "HNWIs"]
@@ -162,99 +188,149 @@ elif option == "HRHP Partnership Ecosystem":
 
     st.plotly_chart(fig)
 
-    st.write("""
-    - **HRHP sits at the center of a vast network** of funders, research partners, and conservation institutions.  
-    - **Funders:** Government grants, private foundations, corporate sponsors, and high-net-worth individuals (HNWIs).  
-    - **Partners:** NGOs, research universities, MARFund, and local governments.  
-    - **Strengthening these relationships** will enhance funding reliability and resource-sharing opportunities.  
-    """)
-
-# 5. Internal Processes Visualization
+# ===================================================
+# 5. INTERNAL PROCESSES DASHBOARD WITH SUBMENU
+# ===================================================
 elif option == "Internal Processes":
-    st.title("📋 HRHP Internal Communications Processes")
+    st.title("📋 HRHP Internal Processes Dashboard")
 
-    # Overview & Goals
-    st.header("🎯 Project Goals")
-    goals = [
-        "Centralize content requests and scheduling (Asana)",
-        "Clarify staff and volunteer roles in content creation",
-        "Integrate Asana and Slack for workflow improvements",
-        "Streamline volunteer onboarding with training docs and videos",
-        "Proactive content planning with a social media calendar",
-        "Restructure Google Drive for easy content access"
-    ]
-    for goal in goals:
-        st.markdown(f"- {goal}")
+    # Sub-navigation for internal processes
+    sub_option = st.selectbox(
+        "Choose a section",
+        [
+            "Project Goals",
+            "Challenges & Painpoints",
+            "Team Roles & Responsibilities",
+            "Google Drive Migration Plan",
+            "Volunteer Onboarding Process",
+            "Summary Insights"
+        ]
+    )
 
-    # Challenges
-    st.header("⚠️ Challenges & Painpoints")
-    challenges = [
-        "No centralized social media content request system",
-        "Unstructured file storage (Google Drive/Dropbox)",
-        "Inconsistent volunteer commitment",
-        "No standardized onboarding process",
-        "Resistance to adopting Asana/Slack",
-        "Lack of a proactive content calendar"
-    ]
-    for challenge in challenges:
-        st.checkbox(challenge)
+    # === PROJECT GOALS ===
+    if sub_option == "Project Goals":
+        st.header("🎯 Project Goals")
+        st.success("""
+        - Centralize content requests and scheduling (Asana)
+        - Clarify staff and volunteer roles in content creation
+        - Integrate Asana and Slack for workflow improvements
+        - Streamline volunteer onboarding with training docs and videos
+        - Proactive content planning with a social media calendar
+        - Restructure Google Drive for easy content access
+        """)
 
-    # Team Roles
-    st.header("👥 Team Roles & Responsibilities")
-    roles = {
-        "Marisol (Content & Community Manager)": [
-            "Approves, schedules, and assigns social media content",
-            "Manages workflow in Asana",
-            "Oversees volunteer training and hiring"
-        ],
-        "HRHP Team": [
-            "Submit content requests and share regional updates"
-        ],
-        "Volunteer: Graphic Designer": ["Create social media visuals"],
-        "Volunteer: Video Editor": ["Edit videos for reels and promotions"],
-        "Volunteer: Content Researcher": ["Gather articles and news"],
-        "Volunteer: Social Media Assistant": ["Post and engage on social platforms"]
-    }
-    for role, duties in roles.items():
-        with st.expander(role):
-            for duty in duties:
-                st.markdown(f"- {duty}")
+    # === CHALLENGES ===
+    elif sub_option == "Challenges & Painpoints":
+        st.header("⚠️ Challenges & Painpoints")
 
-    # Content Request Workflow
-    st.header("🔄 Content Request Workflow")
-    workflow = graphviz.Digraph()
-    workflow.node("1", "Content Request (Asana Task)")
-    workflow.node("2", "Marisol Review & Approval")
-    workflow.node("3", "Assigned to Volunteers")
-    workflow.node("4", "Content Creation (Graphics/Video)")
-    workflow.node("5", "Scheduled & Published")
-    workflow.edge("1", "2")
-    workflow.edge("2", "3")
-    workflow.edge("3", "4")
-    workflow.edge("4", "5")
+        painpoints_data = pd.DataFrame({
+            "Painpoint": [
+                "No centralized content system",
+                "Unstructured file storage",
+                "Inconsistent volunteer commitment",
+                "No standardized onboarding",
+                "Resistance to new tools",
+                "Reactive content planning"
+            ],
+            "Priority (1=Low, 5=High)": [5, 4, 4, 3, 2, 3]
+        })
 
-    st.graphviz_chart(workflow)
+        fig_painpoints = px.bar(
+            painpoints_data,
+            x="Priority (1=Low, 5=High)",
+            y="Painpoint",
+            orientation='h',
+            color="Priority (1=Low, 5=High)",
+            color_continuous_scale='Reds',
+            title="Challenges Prioritized by Impact"
+        )
+        fig_painpoints.update_layout(yaxis=dict(autorange="reversed"))
+        st.plotly_chart(fig_painpoints)
 
-    # Google Drive Migration Plan
-    st.header("🗂️ Google Drive Migration Plan")
-    phases = {
-        "Phase 1 (Months 1-2)": "Plan migration, audit Dropbox, set folder structure",
-        "Phase 2 (Months 3-4)": "Migrate active files, transfer finalized documents",
-        "Phase 3 (Months 5-6)": "Verify files, finalize migration, assign maintenance"
-    }
-    for phase, desc in phases.items():
-        st.markdown(f"### {phase}")
-        st.markdown(f"- {desc}")
+    # === TEAM ROLES ===
+    elif sub_option == "Team Roles & Responsibilities":
+        st.header("👥 Team Roles & Responsibilities Breakdown")
 
-    # Volunteer Onboarding Checklist
-    st.header("🙋 Volunteer Onboarding Steps")
-    onboarding_steps = [
-        "Send Welcome Email & Links",
-        "Review Training Videos (Asana/Slack/Drive)",
-        "First Check-in Call",
-        "Assign First Task"
-    ]
-    for step in onboarding_steps:
-        st.checkbox(step)
+        role_distribution = pd.DataFrame({
+            'Role': [
+                'Marisol (Manager)',
+                'HRHP Team',
+                'Graphic Designer',
+                'Video Editor',
+                'Content Researcher',
+                'Social Media Assistant'
+            ],
+            'Percentage': [25, 20, 15, 15, 15, 10]
+        })
 
-st.sidebar.info("Select a visualization from the dropdown to view strategy insights.")
+        fig_roles = px.pie(
+            role_distribution,
+            values='Percentage',
+            names='Role',
+            title='Role Distribution (Staff & Volunteers)',
+            hole=0.4
+        )
+        st.plotly_chart(fig_roles)
+
+    # === GOOGLE DRIVE MIGRATION ===
+    elif sub_option == "Google Drive Migration Plan":
+        st.header("🗂️ Google Drive Migration Timeline")
+
+        migration_phases = pd.DataFrame({
+            'Phase': ['Planning & Preparation', 'Initial Migration', 'Final Migration & Optimization'],
+            'Months': ['Month 1-2', 'Month 3-4', 'Month 5-6'],
+            'Progress %': [33, 33, 34]
+        })
+
+        fig_migration = px.bar(
+            migration_phases,
+            x='Phase',
+            y='Progress %',
+            text='Months',
+            color='Progress %',
+            color_continuous_scale='Blues',
+            title='6-Month Google Drive Migration Plan'
+        )
+        st.plotly_chart(fig_migration)
+
+    # === VOLUNTEER ONBOARDING ===
+    elif sub_option == "Volunteer Onboarding Process":
+        st.header("🙋 Volunteer Onboarding Process")
+
+        onboarding_steps = pd.DataFrame({
+            "Step": [
+                "Pre-Onboarding Prep",
+                "Initial Welcome Email",
+                "Review Training Videos",
+                "First Check-In Call",
+                "Assign First Task"
+            ],
+            "Status": ["Done", "Done", "In Progress", "Pending", "Pending"]
+        })
+
+        fig_onboarding = px.bar(
+            onboarding_steps,
+            x="Step",
+            y=[1]*len(onboarding_steps),
+            color="Status",
+            labels={"y": "Progress"},
+            title="Volunteer Onboarding Progress"
+        )
+        fig_onboarding.update_layout(yaxis=dict(showticklabels=False))
+        st.plotly_chart(fig_onboarding)
+
+    # === SUMMARY ===
+    elif sub_option == "Summary Insights":
+        st.header("💡 Summary Insights")
+        st.info("""
+        ✅ Centralized communication & content management improves efficiency  
+        ✅ Volunteer onboarding process streamlined  
+        ✅ Proactive content planning reduces last-minute stress  
+        ✅ Google Drive is now structured for accessibility & security  
+        ✅ Asana & Slack integration ensures collaboration success  
+        """)
+
+# ===================================================
+# SIDEBAR INFO
+# ===================================================
+st.sidebar.info("Select a visualization from the dropdown to explore HRHP strategies and processes.")
