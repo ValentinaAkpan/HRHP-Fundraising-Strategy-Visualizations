@@ -192,7 +192,6 @@ elif option == "HRHP Partnership Ecosystem":
 # 5. INTERNAL PROCESSES DASHBOARD WITH SUBMENU
 # ===================================================
 elif option == "Internal Processes":
-    st.title("📋 HRHP Internal Processes Dashboard")
 
     # Sub-navigation for internal processes
     sub_option = st.selectbox(
@@ -203,25 +202,38 @@ elif option == "Internal Processes":
             "Team Roles & Responsibilities",
             "Google Drive Migration Plan",
             "Volunteer Onboarding Process",
-            "Summary Insights"
         ]
     )
 
     # === PROJECT GOALS ===
     if sub_option == "Project Goals":
-        st.header("🎯 Project Goals")
-        st.success("""
-        - Centralize content requests and scheduling (Asana)
-        - Clarify staff and volunteer roles in content creation
-        - Integrate Asana and Slack for workflow improvements
-        - Streamline volunteer onboarding with training docs and videos
-        - Proactive content planning with a social media calendar
-        - Restructure Google Drive for easy content access
-        """)
+
+        # Dashboard Tiles
+        st.subheader("Key Project Goals")
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.info("📌 Centralize Content Requests (Asana)")
+
+        with col2:
+            st.info("👥 Clarify Team Roles & Responsibilities")
+
+        with col3:
+            st.info("🔗 Integrate Asana & Slack")
+
+        col4, col5, col6 = st.columns(3)
+
+        with col4:
+            st.info("📚 Streamline Volunteer Onboarding")
+
+        with col5:
+            st.info("📅 Proactive Content Planning")
+
+        with col6:
+            st.info("📂 Restructure Google Drive")
 
     # === CHALLENGES ===
     elif sub_option == "Challenges & Painpoints":
-        st.header("⚠️ Challenges & Painpoints")
 
         painpoints_data = pd.DataFrame({
             "Painpoint": [
@@ -249,7 +261,6 @@ elif option == "Internal Processes":
 
     # === TEAM ROLES ===
     elif sub_option == "Team Roles & Responsibilities":
-        st.header("👥 Team Roles & Responsibilities Breakdown")
 
         role_distribution = pd.DataFrame({
             'Role': [
@@ -272,63 +283,75 @@ elif option == "Internal Processes":
         )
         st.plotly_chart(fig_roles)
 
-    # === GOOGLE DRIVE MIGRATION ===
+    # === GOOGLE DRIVE MIGRATION PLAN ===
     elif sub_option == "Google Drive Migration Plan":
-        st.header("🗂️ Google Drive Migration Timeline")
 
-        migration_phases = pd.DataFrame({
-            'Phase': ['Planning & Preparation', 'Initial Migration', 'Final Migration & Optimization'],
-            'Months': ['Month 1-2', 'Month 3-4', 'Month 5-6'],
-            'Progress %': [33, 33, 34]
-        })
+        migration_data = pd.DataFrame([
+            dict(Task="Planning & Preparation", Start='2025-01-01', Finish='2025-02-28', Phase="Phase 1"),
+            dict(Task="Initial Migration", Start='2025-03-01', Finish='2025-04-30', Phase="Phase 2"),
+            dict(Task="Final Migration & Optimization", Start='2025-05-01', Finish='2025-06-30', Phase="Phase 3"),
+        ])
 
-        fig_migration = px.bar(
-            migration_phases,
-            x='Phase',
-            y='Progress %',
-            text='Months',
-            color='Progress %',
-            color_continuous_scale='Blues',
-            title='6-Month Google Drive Migration Plan'
+        fig_migration = px.timeline(
+            migration_data,
+            x_start="Start",
+            x_end="Finish",
+            y="Task",
+            color="Phase",
+            title="Google Drive Migration Project Roadmap",
+            template="plotly_white"
         )
+
+        fig_migration.update_yaxes(autorange="reversed")
         st.plotly_chart(fig_migration)
 
-    # === VOLUNTEER ONBOARDING ===
+    # === VOLUNTEER ONBOARDING PROCESS ===
     elif sub_option == "Volunteer Onboarding Process":
-        st.header("🙋 Volunteer Onboarding Process")
 
-        onboarding_steps = pd.DataFrame({
-            "Step": [
-                "Pre-Onboarding Prep",
-                "Initial Welcome Email",
-                "Review Training Videos",
-                "First Check-In Call",
-                "Assign First Task"
-            ],
-            "Status": ["Done", "Done", "In Progress", "Pending", "Pending"]
-        })
 
-        fig_onboarding = px.bar(
-            onboarding_steps,
-            x="Step",
-            y=[1]*len(onboarding_steps),
-            color="Status",
-            labels={"y": "Progress"},
-            title="Volunteer Onboarding Progress"
+        # Steps in order
+        steps = [
+            "Pre-Onboarding Prep",
+            "Initial Welcome Email",
+            "Review Training Videos",
+            "First Check-In Call",
+            "Assign First Task"
+        ]
+
+        x_steps = list(range(1, len(steps) + 1))
+
+        fig = go.Figure()
+
+        # Add scatter points for steps
+        fig.add_trace(go.Scatter(
+            x=x_steps,
+            y=[1]*len(steps),
+            mode='markers+text',
+            marker=dict(size=60, color="#09188d"),
+            text=steps,
+            textposition="top center"
+        ))
+
+        # Add line connecting the steps
+        fig.add_trace(go.Scatter(
+            x=x_steps,
+            y=[1]*len(steps),
+            mode='lines',
+            line=dict(color="#888", width=4),
+            hoverinfo='none'
+        ))
+
+        fig.update_layout(
+            title="Volunteer Onboarding Process Timeline",
+            showlegend=False,
+            xaxis=dict(visible=False),
+            yaxis=dict(visible=False),
+            height=300
         )
-        fig_onboarding.update_layout(yaxis=dict(showticklabels=False))
-        st.plotly_chart(fig_onboarding)
 
-    # === SUMMARY ===
-    elif sub_option == "Summary Insights":
-        st.header("💡 Summary Insights")
-        st.info("""
-        ✅ Centralized communication & content management improves efficiency  
-        ✅ Volunteer onboarding process streamlined  
-        ✅ Proactive content planning reduces last-minute stress  
-        ✅ Google Drive is now structured for accessibility & security  
-        ✅ Asana & Slack integration ensures collaboration success  
-        """)
+        st.plotly_chart(fig)
+
+
 
 # ===================================================
 # SIDEBAR INFO
