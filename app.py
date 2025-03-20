@@ -3,6 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import networkx as nx
+import graphviz
 import base64
 
 # Function to render SVG logos
@@ -20,7 +21,7 @@ with col1:
     st.markdown(render_svg("66b16833c7877e9078babfd7_Healthy-Reefs.svg", width="600"), unsafe_allow_html=True)
 
 with col2:
-    st.title("Healthy Reefs for Healthy People (HRHP) Fundraising Strategy")
+    st.title("Healthy Reefs for Healthy People (HRHP) Fundraising & Internal Processes Strategy")
 
 with col3:
     st.write("")  # Add another logo here if available
@@ -33,7 +34,8 @@ option = st.sidebar.selectbox(
         "Funding Diversification",
         "Data Monetization Strategy",
         "Implementation Timeline",
-        "HRHP Partnership Ecosystem"
+        "HRHP Partnership Ecosystem",
+        "Internal Processes"
     ]
 )
 
@@ -160,12 +162,99 @@ elif option == "HRHP Partnership Ecosystem":
 
     st.plotly_chart(fig)
 
-
     st.write("""
     - **HRHP sits at the center of a vast network** of funders, research partners, and conservation institutions.  
     - **Funders:** Government grants, private foundations, corporate sponsors, and high-net-worth individuals (HNWIs).  
     - **Partners:** NGOs, research universities, MARFund, and local governments.  
     - **Strengthening these relationships** will enhance funding reliability and resource-sharing opportunities.  
     """)
+
+# 5. Internal Processes Visualization
+elif option == "Internal Processes":
+    st.title("📋 HRHP Internal Communications Processes")
+
+    # Overview & Goals
+    st.header("🎯 Project Goals")
+    goals = [
+        "Centralize content requests and scheduling (Asana)",
+        "Clarify staff and volunteer roles in content creation",
+        "Integrate Asana and Slack for workflow improvements",
+        "Streamline volunteer onboarding with training docs and videos",
+        "Proactive content planning with a social media calendar",
+        "Restructure Google Drive for easy content access"
+    ]
+    for goal in goals:
+        st.markdown(f"- {goal}")
+
+    # Challenges
+    st.header("⚠️ Challenges & Painpoints")
+    challenges = [
+        "No centralized social media content request system",
+        "Unstructured file storage (Google Drive/Dropbox)",
+        "Inconsistent volunteer commitment",
+        "No standardized onboarding process",
+        "Resistance to adopting Asana/Slack",
+        "Lack of a proactive content calendar"
+    ]
+    for challenge in challenges:
+        st.checkbox(challenge)
+
+    # Team Roles
+    st.header("👥 Team Roles & Responsibilities")
+    roles = {
+        "Marisol (Content & Community Manager)": [
+            "Approves, schedules, and assigns social media content",
+            "Manages workflow in Asana",
+            "Oversees volunteer training and hiring"
+        ],
+        "HRHP Team": [
+            "Submit content requests and share regional updates"
+        ],
+        "Volunteer: Graphic Designer": ["Create social media visuals"],
+        "Volunteer: Video Editor": ["Edit videos for reels and promotions"],
+        "Volunteer: Content Researcher": ["Gather articles and news"],
+        "Volunteer: Social Media Assistant": ["Post and engage on social platforms"]
+    }
+    for role, duties in roles.items():
+        with st.expander(role):
+            for duty in duties:
+                st.markdown(f"- {duty}")
+
+    # Content Request Workflow
+    st.header("🔄 Content Request Workflow")
+    workflow = graphviz.Digraph()
+    workflow.node("1", "Content Request (Asana Task)")
+    workflow.node("2", "Marisol Review & Approval")
+    workflow.node("3", "Assigned to Volunteers")
+    workflow.node("4", "Content Creation (Graphics/Video)")
+    workflow.node("5", "Scheduled & Published")
+    workflow.edge("1", "2")
+    workflow.edge("2", "3")
+    workflow.edge("3", "4")
+    workflow.edge("4", "5")
+
+    st.graphviz_chart(workflow)
+
+    # Google Drive Migration Plan
+    st.header("🗂️ Google Drive Migration Plan")
+    phases = {
+        "Phase 1 (Months 1-2)": "Plan migration, audit Dropbox, set folder structure",
+        "Phase 2 (Months 3-4)": "Migrate active files, transfer finalized documents",
+        "Phase 3 (Months 5-6)": "Verify files, finalize migration, assign maintenance"
+    }
+    for phase, desc in phases.items():
+        st.markdown(f"### {phase}")
+        st.markdown(f"- {desc}")
+
+    # Volunteer Onboarding Checklist
+    st.header("🙋 Volunteer Onboarding Steps")
+    onboarding_steps = [
+        "Send Welcome Email & Links",
+        "Review Training Videos (Asana/Slack/Drive)",
+        "First Check-in Call",
+        "Assign First Task"
+    ]
+    for step in onboarding_steps:
+        st.checkbox(step)
 
 st.sidebar.info("Select a visualization from the dropdown to view strategy insights.")
