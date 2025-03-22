@@ -201,7 +201,6 @@ elif option == "Internal Processes":
             "Challenges & Painpoints",
             "Team Roles & Responsibilities",
             "Google Drive Migration Plan",
-            "Volunteer Onboarding Process",
         ]
     )
 
@@ -213,18 +212,18 @@ elif option == "Internal Processes":
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.info("📌 Centralize Content Requests (Asana)")
+            st.info("🔗 Integrate Asana & Slack with Candid")
 
         with col2:
-            st.info("👥 Clarify Team Roles & Responsibilities")
+            st.info("👥 Clarify Team Fundraising Roles")
 
         with col3:
-            st.info("🔗 Integrate Asana & Slack")
+            st.info("📂 Centralize RFPs and Applications")
 
         col4, col5, col6 = st.columns(3)
 
         with col4:
-            st.info("📚 Streamline Volunteer Onboarding")
+            st.info("📝 Proactively Curate Donor-Focused Content")
 
         with col5:
             st.info("📅 Proactive Content Planning")
@@ -237,14 +236,13 @@ elif option == "Internal Processes":
 
         painpoints_data = pd.DataFrame({
             "Painpoint": [
-                "No centralized content system",
-                "Unstructured file storage",
-                "Inconsistent volunteer commitment",
-                "No standardized onboarding",
-                "Resistance to new tools",
-                "Reactive content planning"
+                "No centralized RFP & grant tracking",
+                "Unclear fundraising roles",
+                "No integration between Asana, Slack & Candid",
+                "Reactive donor engagement",
+                "Scattered donor-focused content"
             ],
-            "Priority (1=Low, 5=High)": [5, 4, 4, 3, 2, 3]
+            "Priority (1=Low, 5=High)": [5, 5, 4, 4, 3]
         })
 
         fig_painpoints = px.bar(
@@ -265,20 +263,19 @@ elif option == "Internal Processes":
         role_distribution = pd.DataFrame({
             'Role': [
                 'Marisol (Manager)',
-                'HRHP Team',
-                'Graphic Designer',
-                'Video Editor',
-                'Content Researcher',
-                'Social Media Assistant'
+                'HRHP Fundraising Lead',
+                'Grant Writer',
+                'Content Strategist',
+                'Partnership Coordinator'
             ],
-            'Percentage': [25, 20, 15, 15, 15, 10]
+            'Percentage': [30, 25, 20, 15, 10]
         })
 
         fig_roles = px.pie(
             role_distribution,
             values='Percentage',
             names='Role',
-            title='Role Distribution (Staff & Volunteers)',
+            title='Fundraising Team Role Distribution',
             hole=0.4
         )
         st.plotly_chart(fig_roles)
@@ -304,54 +301,6 @@ elif option == "Internal Processes":
 
         fig_migration.update_yaxes(autorange="reversed")
         st.plotly_chart(fig_migration)
-
-    # === VOLUNTEER ONBOARDING PROCESS ===
-    elif sub_option == "Volunteer Onboarding Process":
-
-
-        # Steps in order
-        steps = [
-            "Pre-Onboarding Prep",
-            "Initial Welcome Email",
-            "Review Training Videos",
-            "First Check-In Call",
-            "Assign First Task"
-        ]
-
-        x_steps = list(range(1, len(steps) + 1))
-
-        fig = go.Figure()
-
-        # Add scatter points for steps
-        fig.add_trace(go.Scatter(
-            x=x_steps,
-            y=[1]*len(steps),
-            mode='markers+text',
-            marker=dict(size=60, color="#09188d"),
-            text=steps,
-            textposition="top center"
-        ))
-
-        # Add line connecting the steps
-        fig.add_trace(go.Scatter(
-            x=x_steps,
-            y=[1]*len(steps),
-            mode='lines',
-            line=dict(color="#888", width=4),
-            hoverinfo='none'
-        ))
-
-        fig.update_layout(
-            title="Volunteer Onboarding Process Timeline",
-            showlegend=False,
-            xaxis=dict(visible=False),
-            yaxis=dict(visible=False),
-            height=300
-        )
-
-        st.plotly_chart(fig)
-
-
 
 # ===================================================
 # SIDEBAR INFO
