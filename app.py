@@ -262,7 +262,7 @@ elif option == "Internal Processes":
 
         role_distribution = pd.DataFrame({
             'Role': [
-                'Marisol (Manager)',
+                'Marisol',
                 'HRHP Fundraising Lead',
                 'Grant Writer',
                 'Content Strategist',
